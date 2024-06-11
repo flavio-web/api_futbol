@@ -1,8 +1,9 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { userGet, userById, userPost } = require('../controllers/user.controller');
+const { userGet, userById, userPost, userUpdate, userDelete } = require('../controllers/user.controller');
 const { validarCampos } = require('../middlewares/validar-campos');
-const { emailExiste } = require('../helpers/db-validators');
+const { emailExiste, existeUsuarioById } = require('../helpers/db-validators');
+const { validarJWT } = require('../middlewares/validar-jwt');
 //const path = require('path')
 
 const router = Router();
@@ -16,7 +17,10 @@ const router = Router();
 
 router.get('/', userGet );
 
-router.get('/:id', userById );
+router.get('/:id',[
+    check('id', 'No es un ID válido').isMongoId(),
+    validarCampos
+],userById );
 
 router.post('/',[
     check('email', 'El email es obligatorio.').isEmail(),
@@ -25,5 +29,17 @@ router.post('/',[
     check('email').custom( emailExiste ),
     validarCampos
 ] ,userPost );
+
+router.put('/:id', [
+    check('id').custom( existeUsuarioById ),
+    check('nombre', 'El nombre es obligatorio.').not().isEmpty(),
+    validarCampos
+], userUpdate);
+
+router.delete('/:id', [
+    validarJWT,
+    check('id').custom( existeUsuarioById ),
+    validarCampos
+], userDelete);
 
 module.exports = router;

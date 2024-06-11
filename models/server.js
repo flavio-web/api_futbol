@@ -8,7 +8,8 @@ class Server{
         this.port       = process.env.PORT || 8080;
         
         this.userPath   = '/api/users';
-
+        this.authPath   = '/api/auth';
+        
         //conexion DB
         this.connectDB();
 
@@ -31,6 +32,7 @@ class Server{
 
     routes(){
         this.app.use(this.userPath, require('../routes/user.route.js') );
+        this.app.use(this.authPath, require('../routes/auth.route.js') );
     }
 
 

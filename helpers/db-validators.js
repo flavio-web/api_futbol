@@ -9,6 +9,21 @@ const emailExiste = async ( email ) => {
     }
 }
 
+
+const existeUsuarioById = async ( id ) => {
+
+    if( mongoose.Types.ObjectId.isValid( id ) ){
+        const existeId = await Usuario.findById( id );
+
+        if( !existeId ){
+            throw new Error(`El ID ${id} no existe en la BD.`);
+        }
+    }else{
+        throw new Error(`El ID ${id} no es válido.`);
+    }
+}
+
 module.exports = {
-    emailExiste
+    emailExiste,
+    existeUsuarioById
 }
