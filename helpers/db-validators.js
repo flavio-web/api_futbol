@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Usuario = require("../models/user");
+const Futbolista = require('../models/futbolista');
 
 
 const emailExiste = async ( email ) => {
@@ -23,7 +24,21 @@ const existeUsuarioById = async ( id ) => {
     }
 }
 
+const existeFutbolistaById = async ( id ) => {
+
+    if( mongoose.Types.ObjectId.isValid( id ) ){
+        const existeId = await Futbolista.findById( id );
+
+        if( !existeId ){
+            throw new Error(`El ID ${id} no existe en la BD.`);
+        }
+    }else{
+        throw new Error(`El ID ${id} no es válido.`);
+    }
+}
+
 module.exports = {
     emailExiste,
-    existeUsuarioById
+    existeUsuarioById,
+    existeFutbolistaById
 }

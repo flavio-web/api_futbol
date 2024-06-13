@@ -9,6 +9,7 @@ class Server{
         
         this.userPath   = '/api/users';
         this.authPath   = '/api/auth';
+        this.futbolistaPath   = '/api/futbolista';
         
         //conexion DB
         this.connectDB();
@@ -33,6 +34,7 @@ class Server{
     routes(){
         this.app.use(this.userPath, require('../routes/user.route.js') );
         this.app.use(this.authPath, require('../routes/auth.route.js') );
+        this.app.use(this.futbolistaPath, require('../routes/futbolista.route.js') );
     }
 
 
