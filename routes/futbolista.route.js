@@ -10,6 +10,7 @@ const { validarJWT, validarCampos } = require('../middlewares/index');
 
 const { futbolistasGet, futbolistaById, futbolistaSave, futbolistaUpdate, futbolistaDelete } = require('../controllers/futbolista.controller');
 const { existeFutbolistaById, existeUsuarioById } = require('../helpers/db-validators');
+const { validarUsuarioFutbolista } = require('../middlewares/validar-usuario-futbolista');
 
 
 const router = Router();
@@ -43,6 +44,7 @@ router.put('/:id', [
     check('imagen', 'La URL de la imagen del futbolista es obligtaoria.').not().isEmpty(),
     check('nombre', 'El nombre del futbolista es obligtaorio.').not().isEmpty(),
     check('posicion', 'La posición del futbolista es obligtaoria.').not().isEmpty(),
+    validarUsuarioFutbolista,
     validarCampos
 ], futbolistaUpdate );
 
@@ -50,6 +52,7 @@ router.put('/:id', [
 router.delete('/:id', [
     validarJWT,
     check('id').custom( existeFutbolistaById ),
+    validarUsuarioFutbolista,
     validarCampos
 ], futbolistaDelete );
 
