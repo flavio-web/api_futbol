@@ -1,6 +1,6 @@
 const express = require('express');
 const { dbConnection } = require('../database/config.js');
-
+const cors = require('cors')
 class Server{
 
     constructor(){
@@ -27,6 +27,18 @@ class Server{
     }
 
     middlewares(){
+       /*  var whitelist = ['http://localhost:4200', 'http://localhost']
+        var corsOptions = {
+        origin: function (origin, callback) {
+            if (whitelist.indexOf(origin) !== -1) {
+            callback(null, true)
+            } else {
+            callback(new Error('Not allowed by CORS'))
+            }
+        }
+        } */
+
+        this.app.use(cors())
         this.app.use( express.static('public') );
         this.app.use( express.json() );
     }
